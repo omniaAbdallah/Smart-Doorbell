@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.example.omnia.smartdoorbell.history.DetailsHistoryActivity">
+
+    <ImageView
+        android:id="@+id/image_details_history"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/p"
+        android:scaleType="centerCrop"/>
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1">
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:paddingTop="8dp">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:paddingLeft="16dp"
+               android:paddingTop="8dp">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Name :"
+                   android:textAppearance="?android:textAppearanceSmall"
+                   android:textColor="@color/colorPrimary"
+                   />
+               <TextView
+                   android:id="@+id/name_detail_history"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="omnia"
+                   android:textAppearance="?android:textAppearanceSmall"
+                   android:textColor="@color/colorPrimary"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:paddingLeft="16dp"
+               android:paddingTop="8dp">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Relation :"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+               <TextView
+                   android:id="@+id/relation_detail_history"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="wife"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:paddingLeft="16dp"
+               android:paddingTop="8dp">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="State :"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+               <TextView
+                   android:id="@+id/state_detail_history"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="trusted"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:paddingLeft="16dp"
+               android:paddingTop="8dp">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Action :"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+               <TextView
+                   android:id="@+id/action_detail_history"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="lock"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:paddingLeft="16dp"
+               android:paddingTop="8dp">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Time :"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+               <TextView
+                   android:id="@+id/time_detail_history"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="xx:xx xx-xx-xxxx"
+                   android:textColor="@color/colorPrimary"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+           </LinearLayout>
+
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_margin="16dp">
+
+               <Button
+                   android:id="@+id/add_trusted_button"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="ADD TRUSTED"
+                   android:textColor="@color/colorAccent"
+                   android:background="@color/colorPrimary"
+                   android:onClick="add_trusted"
+                   android:visibility="invisible"
+                   android:textAppearance="?android:textAppearanceSmall"/>
+              <TextView
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"/>
+
+               <Button
+                   android:id="@+id/add_block_button"
+                   android:layout_width="0dp"
+                   android:layout_weight="3"
+                   android:layout_height="wrap_content"
+                   android:text="ADD BLOCK"
+                   android:visibility="invisible"
+                   android:textColor="@color/colorAccent"
+                   android:background="@color/colorPrimary"
+                   android:onClick="add_block"
+
+                   android:textAppearance="?android:textAppearanceSmall"/>
+           </LinearLayout>
+
+       </LinearLayout>
+
+
+
+
+   </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.example.omnia.smartdoorbell.trusted.InsertTrustedActivity">
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" enter name "
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="16dp"/>
+    <EditText
+        android:id="@+id/relation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" enter relation "
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="16dp"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_image_black_24dp"
+            android:id="@+id/Trusted_imageView_insert"
+            android:scaleType="centerCrop"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/Trusted_imageView_insert"
+            android:layout_alignEnd="@+id/Trusted_imageView_insert"
+            android:layout_alignRight="@+id/Trusted_imageView_insert"
+            android:backgroundTint="#b9303f9f"
+            android:onClick="choose"
+            android:src="@drawable/ic_add_black_24dp" />
+    </RelativeLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" ADD NEW TRUSTED  "
+        android:layout_marginTop="32dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:onClick="insert_trusted"/>
+
+</LinearLayout>

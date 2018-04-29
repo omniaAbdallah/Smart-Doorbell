@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context="com.example.omnia.smartdoorbell.block.UpdateBlockActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NAME :"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/colorPrimary"/>
+        <EditText
+            android:id="@+id/block_edit_name"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginLeft="16dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/p"
+            android:id="@+id/block_imageView"
+            android:scaleType="centerCrop"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/block_imageView"
+            android:layout_alignEnd="@+id/block_imageView"
+            android:layout_alignRight="@+id/block_imageView"
+            android:backgroundTint="#b9303f9f"
+            android:onClick="edit_image"
+            android:src="@drawable/ic_edit_black_24dp" />
+    </RelativeLayout>
+
+
+
+
+    <Button
+        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:layout_gravity="center"
+        android:textColor="@color/colorAccent"
+        android:background="@color/colorPrimary"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:onClick="save"
+        android:textStyle="bold"/>
+
+</LinearLayout>
