@@ -13,20 +13,20 @@ public class BlockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block);
-        Intent intent=getIntent();
-        ip=intent.getStringExtra("ip");
+//        Intent intent=getIntent();
+//        ip=intent.getStringExtra("ip");
 
     }
 
     public void show(View view) {
         Intent intent =new Intent(BlockActivity.this, ShowListBlockActivity.class);
-        intent.putExtra("ip",ip);
+//        intent.putExtra("ip",ip);
         startActivity(intent);
     }
 
     public void add(View view) {
         Intent intent =new Intent(BlockActivity.this, InsertBlockActivity.class);
-        intent.putExtra("ip",ip);
+//        intent.putExtra("ip",ip);
         intent.putExtra("image","null");
 
         startActivity(intent);

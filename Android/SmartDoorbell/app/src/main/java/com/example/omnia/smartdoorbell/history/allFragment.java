@@ -1,5 +1,7 @@
 package com.example.omnia.smartdoorbell.history;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,29 +32,38 @@ public class allFragment extends Fragment {
 
     RecyclerView rec;
     List<history> all;
-    String ip,url;
+    String ip, url;
 
     //AdpterListHistory adpterListHistory;
 
 
     @Override
-    public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
-     View   v = inflater.inflate(R.layout.fragment_all, container, false);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_all, container, false);
 
 
-        Log.e(" 2- ","on creat view fragment all  :");
+        Log.e(" 2- ", "on creat view fragment all  :");
         rec = (RecyclerView) v.findViewById(R.id.AllHistory);
-        Log.e(" 3- ","get rec :");
+        Log.e(" 3- ", "get rec :");
         rec.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Log.e(" 5- "," rec.setLayoutManager:");
+        Log.e(" 5- ", " rec.setLayoutManager:");
 
 
         Log.e(" 1- ", "on creat fragment :");
         all = new ArrayList<>();
-        //  ip=getArguments().getString("ip");
-        ip = "192.168.43.115:5005";
+        //        ip = "192.168.43.12:5005";
 //        ip="192.168.1.4:5005";
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sharedfile", getActivity().MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
+
         url = "http://" + ip + "/show_history/all".trim();
+        Toast.makeText(getActivity(), "ip is" + ip, Toast.LENGTH_SHORT).show();
         System.out.println(" url :" + url);
         Log.e(" url log ", url + "");
         System.out.println(" url :" + url);
@@ -91,15 +102,14 @@ public class allFragment extends Fragment {
 
                         all.add(history);
 
-                        AdpterListHistory adpterListHistoryall = new AdpterListHistory(getContext(), all,ip);
-                        Log.e(" 4- ","create adpter : ip ="+ip);
+                        AdpterListHistory adpterListHistoryall = new AdpterListHistory(getContext(), all, ip);
+                        Log.e(" 4- ", "create adpter : ip =" + ip);
 
-                        Toast.makeText(getContext(), "list size : "+all.size(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "list size : " + all.size(), Toast.LENGTH_LONG).show();
 
                         rec.setAdapter(adpterListHistoryall);
 
-                        Log.e(" 6- "," rec.setadpter:");
-
+                        Log.e(" 6- ", " rec.setadpter:");
 
 
                     }
@@ -125,14 +135,11 @@ public class allFragment extends Fragment {
         queue.add(stringRequest);
 
 
-
-
-
         return v;
     }
 
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        history h1 = new history();

@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.block;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -43,13 +44,14 @@ public class InsertBlockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_insert_block);
         namee = (TextView) findViewById(R.id.block_insert_name);
         imageView=(ImageView)findViewById(R.id.block_imageView_insert);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
 
         Intent intent = getIntent();
 
         if (intent.getStringExtra("image") .equals("null")){
         }else{
             image=intent.getStringExtra("image");
-            ip=intent.getStringExtra("ip");
             String path="http://"+ip+"/"+image.trim();
             Log.e("ip from detail : ",path);
 
@@ -67,8 +69,8 @@ public class InsertBlockActivity extends AppCompatActivity {
         // Start the queue
         queue.start();
         System.out.println("Start the queue");
-        Intent intent = getIntent();
-        ip = intent.getStringExtra("ip");
+//        Intent intent = getIntent();
+//        ip = intent.getStringExtra("ip");
         url1 = "http://" + ip + "/insert_block".trim();
         System.out.println(" url :" + url1);
         Log.e(" url log ", url1 + "");

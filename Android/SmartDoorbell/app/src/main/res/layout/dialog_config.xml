@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" enter ip for server :"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="?android:textAppearanceMedium"
+        />
+    <EditText
+        android:id="@+id/ip_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="?android:textAppearanceMedium"
+        />
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" enter ip for esp :"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="?android:textAppearanceMedium"
+        />
+    <EditText
+        android:id="@+id/ip_esp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="?android:textAppearanceMedium"
+        />
+
+    <Button
+        android:id="@+id/dailog_ok"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/colorAccent"
+        android:text="OK"
+        android:textStyle="bold"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

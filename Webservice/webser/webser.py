@@ -3,6 +3,8 @@ from flask import *
 from werkzeug.utils import secure_filename
 import json
 
+import doorbell_database,faceRecognition
+
 import pymysql
 from flask import Response
 
@@ -62,6 +64,7 @@ def get_img():
         print("name :" + request.form['submit'])
 
         file = request.files['fileToUpload']
+        print("file if :",file.filename)
 
     if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -72,10 +75,40 @@ def get_img():
            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             imgname = "static/uploads/" + filename
-            print("image name" + imgname)
+            x = url_for('static', filename=imgname)
+            print("rrrrrrrrrrrrrrrrrrrrrrrrrr"+ x)
+            # imgname="static/uploads/test4.jpg"
+            # imgname="test-data/test(1).jpg"
+            print("image name" + x)
 
-            insert_history(imgname,"unkown","unlock","01:31 5-8-20018","unkown","unkown");
 
+            trusted_name, trusted_id = faceRecognition.IS_trusted(imgname)
+            block_name, block_id = faceRecognition.IS_block(imgname)
+
+            print("is trusted : ", trusted_name)
+            print("is block : ", block_name)
+
+            from time import gmtime, strftime
+            time = strftime("%Y-%m-%d %H:%M", gmtime())
+
+            print("time :", time)
+            if block_name == "unkown" and trusted_name == "unkown":
+                print("insert unkown")
+                doorbell_database.insert_history(imgname, "unkown", "nulock", time, "unkown", "unkown")
+
+            elif block_name != "unkown" and trusted_name == "unkown":
+                print(" insert block ")
+                doorbell_database.insert_history(imgname, "block", "nulock", time, block_name, "block")
+
+
+            elif block_name == "unkown" and trusted_name != "unkown":
+                print(" insert trusted ")
+                relation = doorbell_database.get_truted(int(trusted_id))
+                print(" det relation ", trusted_id)
+                doorbell_database.insert_history(imgname, "trusted", "lock", time, trusted_name, relation)
+
+            elif block_name != "unkown" and trusted_name != "unkown":
+                print(" can't  classfied ")
 
             x = json.dumps({'state': imgname})
             resp = Response(x, status=200, mimetype='application/json')
@@ -172,7 +205,7 @@ def insert_truset():
 
             imgname = "static/uploads/" + filename
             print("image name" + imgname)
-            state = insert_truset(name=name, relation=relation, imgname=imgname)
+            state = doorbell_database.insert_truset(name=name, relation=relation, imgname=imgname)
 
             x = json.dumps({'state': state})
             resp = Response(x, status=200, mimetype='application/json')
@@ -203,7 +236,7 @@ def uptate_truset():
 
             imgname = "static/uploads/" + filename
             print("image name" + imgname)
-            state = uptate_trusted(name,relation,id,imgname)
+            state = doorbell_database.uptate_trusted(name,relation,id,imgname)
 
         x = json.dumps({'state': state})
         resp = Response(x, status=200, mimetype='application/json')
@@ -219,7 +252,7 @@ def deletee_trusett():
             print("method is post ")
 
             id=request.form['id']
-            delete_trusted(id)
+            doorbell_database.delete_trusted(id)
             state='ok'
         x = json.dumps({'state': state})
         resp = Response(x, status=200, mimetype='application/json')
@@ -237,7 +270,7 @@ def deletee_block():
             print("method is post ")
 
             id=request.form['id']
-            delete_block(id)
+            doorbell_database.delete_block(id)
             state='ok'
         x = json.dumps({'state': state})
         resp = Response(x, status=200, mimetype='application/json')
@@ -289,15 +322,15 @@ def insert_block():
 
             imgname = "static/uploads/" + filename
             print("image name" + imgname)
-            state = insert_block(name,imgname)
+            state = doorbell_database.insert_block(name,imgname)
 
             x = json.dumps({'state': state})
             resp = Response(x, status=200, mimetype='application/json')
             resp.status_code = 200
             return resp
 
-    @app.route('/uptate_block', methods=['POST'])
-    def uptate_block():
+@app.route('/uptate_block', methods=['POST'])
+def uptate_block():
         # name = request.form['name']
         # print('from form name: ' + name)
         if request.method == 'POST':
@@ -320,7 +353,7 @@ def insert_block():
 
             imgname = "static/uploads/" + filename
             print("image name" + imgname)
-            state = uptate_block(name, imgname,id)
+            state =doorbell_database.uptate_block(name, imgname,id)
 
         x = json.dumps({'state': state})
         resp = Response(x, status=200, mimetype='application/json')
@@ -329,195 +362,36 @@ def insert_block():
 
 		
 
-@app.route('/uptate_block', methods=['POST'])
-def uptate_block():
-        # name = request.form['name']
-        # print('from form name: ' + name)
-        if request.method == 'POST':
-            print("method is post ")
-            # print("name :" + request.form['filename'])
-            name = request.form['name']
-            print("name :" + name)
-            id=request.form['id']
-           
-            file = request.files['pic']
+# @app.route('/uptate_block', methods=['POST'])
+# def uptate_block():
+#         # name = request.form['name']
+#         # print('from form name: ' + name)
+#         if request.method == 'POST':
+#             print("method is post ")
+#             # print("name :" + request.form['filename'])
+#             name = request.form['name']
+#             print("name :" + name)
+#             id=request.form['id']
+#
+#             file = request.files['pic']
+#
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             print(filename)
+#             basedir = os.path.abspath(os.path.dirname(__file__))
+#
+#             file.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename))
+#             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#
+#             imgname = "static/uploads/" + filename
+#             print("image name" + imgname)
+#             state = uptate_block(name,imgname,id)
+#
+#         x = json.dumps({'state': state})
+#         resp = Response(x, status=200, mimetype='application/json')
+#         resp.status_code = 200
+#         return resp
 
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            print(filename)
-            basedir = os.path.abspath(os.path.dirname(__file__))
-
-            file.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename))
-            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-            imgname = "static/uploads/" + filename
-            print("image name" + imgname)
-            state = uptate_block(name,imgname,id)
-
-        x = json.dumps({'state': state})
-        resp = Response(x, status=200, mimetype='application/json')
-        resp.status_code = 200
-        return resp
-#******************************* method of databse *******************************#
-
-#******************************* trusted *******************************#
-
-
-def uptate_trusted(name,relation,id,imagname):
-    conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                           cursorclass=pymysql.cursors.DictCursor)
-    a = conn.cursor()
-    id=int(id)
-    sql = "UPDATE `trusted` SET `name`='%s',`relation`='%s',`imagename`='%s' WHERE `id`='%d' " % \
-          (name, relation,imagname,id)
-    try:
-        a.execute(sql)
-        print("excute")
-        conn.commit()
-        print("commit")
-        state = "ok"
-    except:
-        conn.rollback()
-        print("rollback")
-        state = "no"
-
-    conn.close()
-    return state
-
-
-def delete_trusted(id):
-    conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                           cursorclass=pymysql.cursors.DictCursor)
-    a = conn.cursor()
-    id=int(id)
-    sql = "DELETE FROM `trusted` WHERE `id`='%d' " % \
-          (id)
-    try:
-        a.execute(sql)
-        print("excute")
-        conn.commit()
-        print("commit")
-        state = "ok"
-    except:
-        conn.rollback()
-        print("rollback")
-        state = "no"
-
-    conn.close()
-    return state
-
-
-def insert_truset(name,relation,imgname):
-   conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                          cursorclass=pymysql.cursors.DictCursor)
-   a = conn.cursor()
-
-   sql = "INSERT INTO `trusted`(`name`, `relation`, `imagename`)VALUES ('%s', '%s', '%s')" % \
-         (name, relation, imgname)
-   try:
-      a.execute(sql)
-      print("excute")
-      conn.commit()
-      print("commit")
-      state= "ok"
-   except:
-      conn.rollback()
-      print("rollback")
-      state="no"
-
-   conn.close()
-   return state
-
-
-   
-#******************************* block  *******************************#
-
-
-def uptate_block(name,imagname,id):
-    conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                           cursorclass=pymysql.cursors.DictCursor)
-    a = conn.cursor()
-    id=int(id)
-    sql = "UPDATE `block` SET `name`='%s',`imagename`='%s' WHERE`id`='%d' " % \
-          (name, imagname,id)
-    try:
-        a.execute(sql)
-        print("excute")
-        conn.commit()
-        print("commit")
-        state = "ok"
-    except:
-        conn.rollback()
-        print("rollback")
-        state = "no"
-
-    conn.close()
-    return state
-
-
-def delete_block(id):
-    conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                           cursorclass=pymysql.cursors.DictCursor)
-    a = conn.cursor()
-    id=int(id)
-    sql = "DELETE FROM `block` WHERE `id`='%d' " % \
-          (id)
-    try:
-        a.execute(sql)
-        print("excute")
-        conn.commit()
-        print("commit")
-        state = "ok"
-    except:
-        conn.rollback()
-        print("rollback")
-        state = "no"
-
-    conn.close()
-    return state
-
-
-def insert_block (name,imgname):
-   conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                          cursorclass=pymysql.cursors.DictCursor)
-   a = conn.cursor()
-
-   sql = "INSERT INTO `block`( `name`, `imagename`) VALUES ('%s','%s')" % \
-         (name, imgname)
-   try:
-      a.execute(sql)
-      print("excute")
-      conn.commit()
-      print("commit")
-      state= "ok"
-   except:
-      conn.rollback()
-      print("rollback")
-      state="no"
-
-   conn.close()
-   return state
-#*****************************************history****************************#
-def insert_history( imgname, state, action, time, name, relation ):
-    conn = pymysql.connect(host='localhost', user='root', password='', db='doorbell', charset='utf8mb4',
-                           cursorclass=pymysql.cursors.DictCursor)
-    a = conn.cursor()
-
-    sql2 = "INSERT INTO `history`( `imagename`, `state`, `action`, `time`, `name`, `relation`) VALUES ('%s','%s','%s','%s','%s','%s')" % \
-           (imgname, state, action, time, name, relation)
-    try:
-        a.execute(sql2)
-        print("excute")
-        conn.commit()
-        print("commit")
-        state = "ok"
-    except:
-        conn.rollback()
-        print("rollback")
-        state = "no"
-
-    conn.close()
-    return state
 
 @app.route('/')
 def hello_world():

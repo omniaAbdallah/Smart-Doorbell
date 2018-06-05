@@ -13,21 +13,21 @@ String ip ;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_trusted);
-
-        Intent intent=getIntent();
-        ip=intent.getStringExtra("ip");
+//
+//        Intent intent=getIntent();
+//        ip=intent.getStringExtra("ip");
 
     }
 
     public void show(View view) {
         Intent intent =new Intent(MainTrustedActivity.this, ShowTrustedActivity.class);
-        intent.putExtra("ip",ip);
+//        intent.putExtra("ip",ip);
         startActivity(intent);
     }
 
     public void add(View view) {
         Intent intent =new Intent(MainTrustedActivity.this, InsertTrustedActivity.class);
-        intent.putExtra("ip",ip);
+//        intent.putExtra("ip",ip);
         intent.putExtra("image","null");
 
         startActivity(intent);

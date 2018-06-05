@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.block;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -51,7 +52,9 @@ public class UpdateBlockActivity extends AppCompatActivity {
         edit_name.setText(intent.getStringExtra("name"));
         image=intent.getStringExtra("image");
 
-        ip=intent.getStringExtra("ip");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
+
         String path="http://"+ip+"/"+image.trim();
         Log.e("ip from detail : ",path);
 
@@ -115,8 +118,8 @@ public class UpdateBlockActivity extends AppCompatActivity {
         // Start the queue
         queue.start();
         System.out.println("Start the queue");
-        Intent intent = getIntent();
-        ip = intent.getStringExtra("ip");
+//        Intent intent = getIntent();
+//        ip = intent.getStringExtra("ip");
         url1 = "http://" + ip + "/uptate_block".trim();
         System.out.println(" url :" + url1);
         Log.e(" url log ", url1 + "");

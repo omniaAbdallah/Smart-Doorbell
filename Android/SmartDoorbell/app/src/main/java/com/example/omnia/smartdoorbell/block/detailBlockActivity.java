@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.block;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -38,6 +39,9 @@ public class detailBlockActivity extends AppCompatActivity {
         idd=(TextView)findViewById(R.id.bid);
         img=(ImageView)findViewById(R.id.bimg);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
+
 
         Intent intent = getIntent();
         id=intent.getStringExtra("id");
@@ -48,7 +52,6 @@ public class detailBlockActivity extends AppCompatActivity {
 //        System.out.print("ip from detail : "+ip);
 //        Log.e("ip from detail : ",ip);
         image=intent.getStringExtra("img");
-        ip =intent.getStringExtra("ip");
         String path="http://"+ip+"/"+image.trim();
         Log.e("ip from detail : ",path);
 
@@ -66,8 +69,8 @@ public class detailBlockActivity extends AppCompatActivity {
         // Start the queue
         queue.start();
         System.out.println("Start the queue");
-        Intent intent=getIntent();
-        ip=intent.getStringExtra("ip");
+//        Intent intent=getIntent();
+//        ip=intent.getStringExtra("ip");
         url1="http://"+ip+"/delete_block".trim();
         System.out.println(" url :"+url1);
         Log.e(" url log ",url1+"");

@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.history;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,7 +36,8 @@ public class DetailsHistoryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         imgg = intent.getStringExtra("image");
-        ip=intent.getStringExtra("ip");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
         String path = "http://" + ip+ "/" + imgg.trim();
         Log.e("ip from detail : ", path);
 

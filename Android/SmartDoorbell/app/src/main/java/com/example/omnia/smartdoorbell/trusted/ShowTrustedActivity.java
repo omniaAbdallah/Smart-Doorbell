@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.trusted;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,7 +48,8 @@ public class ShowTrustedActivity extends AppCompatActivity {
         System.out.println("Start the queue");
 
         Intent intent=getIntent();
-        ip=intent.getStringExtra("ip");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
         url1="http://"+ip+"/show_trusted".trim();
         System.out.println(" url :"+url1);
         Log.e(" url log ",url1+"");

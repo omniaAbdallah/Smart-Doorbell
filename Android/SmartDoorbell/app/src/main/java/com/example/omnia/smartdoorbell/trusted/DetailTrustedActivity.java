@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.trusted;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,7 +51,8 @@ public class DetailTrustedActivity extends AppCompatActivity {
 //        System.out.print("ip from detail : "+ip);
 //        Log.e("ip from detail : ",ip);
          image=intent.getStringExtra("img");
-ip =intent.getStringExtra("ip");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
         String path="http://"+ip+"/"+image.trim();
         Log.e("ip from detail : ",path);
 
@@ -68,8 +70,8 @@ ip =intent.getStringExtra("ip");
         // Start the queue
         queue.start();
         System.out.println("Start the queue");
-        Intent intent=getIntent();
-        ip=intent.getStringExtra("ip");
+//        Intent intent=getIntent();
+//        ip=intent.getStringExtra("ip");
         url1="http://"+ip+"/delete_trusted".trim();
         System.out.println(" url :"+url1);
         Log.e(" url log ",url1+"");
@@ -85,6 +87,8 @@ ip =intent.getStringExtra("ip");
                             JSONObject object = new JSONObject(new String(response.data));
                             if (object.getString("state").equals("ok")) {
                                 Toast.makeText(DetailTrustedActivity.this, "success", Toast.LENGTH_LONG).show();
+
+
                                 Intent intent=new Intent(getBaseContext(),ShowTrustedActivity.class);
                                 intent.putExtra("ip",ip);
                                 startActivity(intent);

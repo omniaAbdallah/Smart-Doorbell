@@ -36,28 +36,28 @@ public class History_Activity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
-        Intent intent=getIntent();
-        ip=intent.getStringExtra("ip");
-        Bundle b=new Bundle();
-        b.putString("ip",ip);
+//        Intent intent=getIntent();
+//        ip=intent.getStringExtra("ip");
+//        Bundle b=new Bundle();
+//        b.putString("ip",ip);
 
-        allFragment all=new allFragment();
-        all.setArguments(b);
-
-        TrustedFragment t=new TrustedFragment();
-        t.setArguments(b);
-
-        LockFragment l=new LockFragment();
-        l.setArguments(b);
-
-        BlockFragment blockFragment=new BlockFragment();
-        blockFragment.setArguments(b);
-
-        UnkownFragment unkownFragment=new UnkownFragment();
-        unkownFragment.setArguments(b);
-
-        UnlockFragment unlockFragment=new UnlockFragment();
-        unlockFragment.setArguments(b);
+//        allFragment all=new allFragment();
+//        all.setArguments(b);
+//
+//        TrustedFragment t=new TrustedFragment();
+//        t.setArguments(b);
+//
+//        LockFragment l=new LockFragment();
+//        l.setArguments(b);
+//
+//        BlockFragment blockFragment=new BlockFragment();
+//        blockFragment.setArguments(b);
+//
+//        UnkownFragment unkownFragment=new UnkownFragment();
+//        unkownFragment.setArguments(b);
+//
+//        UnlockFragment unlockFragment=new UnlockFragment();
+//        unlockFragment.setArguments(b);
 
 
 

@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.trusted;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -54,7 +55,8 @@ ImageView edit_image;
         edit_relation.setText(intent.getStringExtra("relation"));
         image=intent.getStringExtra("image");
 
-        ip=intent.getStringExtra("ip");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile",MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
         String path="http://"+ip+"/"+image.trim();
         Log.e("ip from detail : ",path);
 
@@ -119,8 +121,8 @@ update(bitmap,name,relation,idd);
         // Start the queue
         queue.start();
         System.out.println("Start the queue");
-        Intent intent = getIntent();
-        ip = intent.getStringExtra("ip");
+//        Intent intent = getIntent();
+//        ip = intent.getStringExtra("ip");
         url1 = "http://" + ip + "/uptate_trusted".trim();
         System.out.println(" url :" + url1);
         Log.e(" url log ", url1 + "");
@@ -172,23 +174,7 @@ update(bitmap,name,relation,idd);
 
 
         };
-//        volleyMultipartRequest.setRetryPolicy(new RetryPolicy() {
-//            @Override
-//            public int getCurrentTimeout() {
 //
-//                return 50000;
-//            }
-//
-//            @Override
-//            public int getCurrentRetryCount() {
-//                return 50000;
-//            }
-//
-//            @Override
-//            public void retry(VolleyError error) throws VolleyError {
-//
-//            }
-//        });
         // Adding request to request queue
        queue.add(volleyMultipartRequest);
 

@@ -1,6 +1,7 @@
 package com.example.omnia.smartdoorbell.trusted;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -28,37 +29,45 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class InsertTrustedActivity extends AppCompatActivity {
-    String url1, ip,image;
+    String url1, ip, image;
     TextView namee, img, relation;
     Bitmap bitmap;
     ImageView imageView;
+    List bitmaplist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_trusted);
-        namee = (TextView) findViewById(R.id.name);
-       // img = (TextView) findViewById(R.id.Trusted_imageView_insert);
-        relation = (TextView) findViewById(R.id.relation);
-        imageView=(ImageView)findViewById(R.id.Trusted_imageView_insert);
 
+
+        namee = (TextView) findViewById(R.id.name);
+        // img = (TextView) findViewById(R.id.Trusted_imageView_insert);
+        relation = (TextView) findViewById(R.id.relation);
+        imageView = (ImageView) findViewById(R.id.Trusted_imageView_insert);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedfile", MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
         Intent intent = getIntent();
 
 
-        if (intent.getStringExtra("image") .equals("null")){
-        }else{
-            image=intent.getStringExtra("image");
-            ip=intent.getStringExtra("ip");
-            String path="http://"+ip+"/"+image.trim();
-            Log.e("ip from detail : ",path);
+        if (intent.getStringExtra("image").equals("null")) {
+        }
+//insert from  activity history  if has image
+        else {
+            image = intent.getStringExtra("image");
+
+            String path = "http://" + ip + "/" + image.trim();
+            Log.e("ip from detail : ", path);
 
             Picasso.with(this).load(path).into(imageView);
-            bitmap=((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         }
 
     }
@@ -68,12 +77,10 @@ public class InsertTrustedActivity extends AppCompatActivity {
         // Start the queue
         queue.start();
         System.out.println("Start the queue");
-        Intent intent = getIntent();
-        ip = intent.getStringExtra("ip");
         url1 = "http://" + ip + "/insert_trusted".trim();
         System.out.println(" url :" + url1);
         Log.e(" url log ", url1 + "");
-        //  url1="http://192.168.43.115:5005/insert_trusted";
+
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url1,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -82,8 +89,8 @@ public class InsertTrustedActivity extends AppCompatActivity {
                             JSONObject object = new JSONObject(new String(response.data));
                             if (object.getString("state").equals("ok")) {
                                 Toast.makeText(InsertTrustedActivity.this, "success", Toast.LENGTH_LONG).show();
-                                Intent intent=new Intent(getBaseContext(),ShowTrustedActivity.class);
-                                intent.putExtra("ip",ip);
+                                Intent intent = new Intent(getBaseContext(), ShowTrustedActivity.class);
+                                intent.putExtra("ip", ip);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
@@ -105,7 +112,7 @@ public class InsertTrustedActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", nam);
                 params.put("relation", relation);
-               // params.put("img", img);
+                // params.put("img", img);
                 params.put("filename", getFileDataFromDrawable(bitmap).toString());
                 return params;
             }
@@ -123,7 +130,7 @@ public class InsertTrustedActivity extends AppCompatActivity {
         };
 
         // Adding request to request queue
-       queue.add(volleyMultipartRequest);
+        queue.add(volleyMultipartRequest);
 
     }
 
@@ -139,6 +146,7 @@ public class InsertTrustedActivity extends AppCompatActivity {
 
     public void choose(View view) {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(i, 100);
     }
 
@@ -149,12 +157,18 @@ public class InsertTrustedActivity extends AppCompatActivity {
 
             //getting the image Uri
             Uri imageUri = data.getData();
+//            if (bitmaplist ==null){
+//                bitmaplist=new ArrayList<Bitmap>();
+//            }
+
             try {
                 //getting bitmap object from uri
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
+
+
                 //displaying selected image to imageview
-                 imageView.setImageBitmap(bitmap);
+                imageView.setImageBitmap(bitmap);
 
                 //calling the method uploadBitmap to upload image
                 // uploadBitmap(bitmap);
@@ -165,14 +179,14 @@ public class InsertTrustedActivity extends AppCompatActivity {
     }
 
     /*
-    * The method is taking Bitmap as an argument
-    * then it will return the byte[] array for the given bitmap
-    * and we will send this array to the server
-    * here we are using PNG Compression with 80% quality
-    * you can give quality between 0 to 100
-    * 0 means worse quality
-    * 100 means best quality
-    * */
+     * The method is taking Bitmap as an argument
+     * then it will return the byte[] array for the given bitmap
+     * and we will send this array to the server
+     * here we are using PNG Compression with 80% quality
+     * you can give quality between 0 to 100
+     * 0 means worse quality
+     * 100 means best quality
+     * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);

@@ -1,5 +1,6 @@
 package com.example.omnia.smartdoorbell.history;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,8 @@ public class BlockFragment extends Fragment {
         Log.e(" 1- ", "on creat fragment :");
         block = new ArrayList<>();
         //  ip=getArguments().getString("ip");
-        ip ="192.168.43.115:5005";
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sharedfile", getActivity().MODE_PRIVATE);
+        ip = sharedPreferences.getString("ipServer", "nulllllllll");
 //        ip = "192.168.1.4:5005";
         url = "http://" + ip + "/show_history/block".trim();
         System.out.println(" url :" + url);
