@@ -5,10 +5,11 @@ import os
 #import numpy to convert python lists to numpy arrays as
 #it is needed by OpenCV face recognizers
 import numpy as np
+from flask import url_for
 from sqlalchemy.sql.functions import random
 
 import doorbell_database
-
+from PIL import Image
 
 def detect_face(img):
     # convert the test image to gray image as opencv face detector expects gray images
@@ -16,7 +17,9 @@ def detect_face(img):
 
     # load OpenCV face detector, I am using LBP which is fast
     # there is also a more accurate but slow Haar classifier
-    face_cascade = cv2.CascadeClassifier('opencv-files/lbpcascade_frontalface.xml')
+    face_cascade = cv2.CascadeClassifier('F:\python_web\webser\opencv-files/lbpcascade_frontalface.xml')
+    test=face_cascade.load('F:\python_web\webser\opencv-files/lbpcascade_frontalface.xml')
+    print("face_cascade",test)
 
     # let's detect multiscale (some images may be closer to camera than others) images
     # result is a list of faces
@@ -55,10 +58,21 @@ def prepare_training_data(images):
         label=image_name
         # print("lable :",label)
         for image_path in images[image_name]:
+            image_path='F:/python_web/webser/'+image_path
+            # url_for('static/', filename=)
 
+            print("image path from for 1 :" + image_path)
+            # if os.path.exists(image_path):
+            print("image path from for 2 :" + image_path)
 
             # read image
             image = cv2.imread(image_path)
+            # imagee=Image.open(image_path)
+
+            # print("image  from for  :", image)
+
+            # imagee.show()
+
 
             # display an image window to show the image
             cv2.imshow("Training on image...", cv2.resize(image, (400, 500)))
@@ -75,6 +89,8 @@ def prepare_training_data(images):
                 faces.append(face)
                 # add label for this face
                 labels.append(label)
+                # else :
+                # print(" null")
 
     cv2.destroyAllWindows()
     cv2.waitKey(1)
@@ -96,6 +112,7 @@ def prepare_training_data(images):
 # and draws a rectangle around detected face with name of the
 # subject
 def predict(test_img , names,face_recognizer):
+
     # make a copy of the image as we don't want to chang original image
     img = test_img.copy()
     # print("image :",img)
@@ -106,7 +123,7 @@ def predict(test_img , names,face_recognizer):
     label, confidence = face_recognizer.predict(face)
     print("confidence :",confidence ,"name :",names[label])
 
-    if confidence <=50:
+    if confidence <=80:
         # get name of respective label returned by face recognizer
         label_text = names[label]
     else :
@@ -119,7 +136,7 @@ def predict(test_img , names,face_recognizer):
     # draw name of predicted person
     draw_text(img, label_text, rect[0], rect[1] - 5)
 
-    return img,label_text,label
+    return img,label_text,label,confidence
 
 
 # **Did you notice** that instead of passing `labels` vector directly to face recognizer I am first converting it to **numpy** array? This is because OpenCV expects labels vector to be a `numpy` array.
@@ -149,6 +166,8 @@ def draw_text(img, text, x, y):
 
 
 def IS_trusted(image):
+    image = 'F:/python_web/webser/' + image
+    print("test image ", image)
     print(image)
     alltrusted, trusted_name,trusted_id = doorbell_database.show_truset()
     print("Preparing data trusted ...")
@@ -170,7 +189,7 @@ def IS_trusted(image):
     test_img1 = cv2.imread(image)
 
     # perform a prediction
-    predicted_img1, name,indesx = predict(test_img1,trusted_name,face_recognizer)
+    predicted_img1, name,indesx,confidT = predict(test_img1,trusted_name,face_recognizer)
     print("Prediction complete")
 
     # # display both images
@@ -180,12 +199,14 @@ def IS_trusted(image):
     # cv2.waitKey(1)
     # cv2.destroyAllWindows()
 
-    return name,trusted_id[indesx]
+    return name,trusted_id[indesx],confidT
 
 
 def IS_block(image):
+    image = 'F:/python_web/webser/' + image
+    print("test image ", image)
     allblock, block_name,block_id = doorbell_database.show_block()
-    print("Preparing data trusted ...")
+    print("Preparing data block ...")
     faces, labels = prepare_training_data(allblock)
     print("Data prepared")
 
@@ -204,7 +225,7 @@ def IS_block(image):
     test_img1 = cv2.imread(image)
 
     # perform a prediction
-    predicted_img1, name,index = predict(test_img1,block_name,face_recognizer)
+    predicted_img1, name,index,confidB = predict(test_img1,block_name,face_recognizer)
     print("Prediction complete")
 
     # # display both images
@@ -214,7 +235,7 @@ def IS_block(image):
     # cv2.waitKey(1)
     # cv2.destroyAllWindows()
 
-    return name,block_id[index]
+    return name,block_id[index],confidB
 #
 # image="static/uploads/test4.jpg"
 # trusted_name,trusted_id=IS_trusted(image)
@@ -246,7 +267,7 @@ def IS_block(image):
 # elif block_name!="unkown" and trusted_name!="unkown":
 #     imgname = "static/uploads/"
 #     print (" can't  classfied ")
-
+#
 
 
 
