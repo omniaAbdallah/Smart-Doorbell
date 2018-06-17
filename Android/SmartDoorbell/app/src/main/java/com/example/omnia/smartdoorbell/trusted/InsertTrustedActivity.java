@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.example.omnia.smartdoorbell.CustomAdapter;
+import com.example.omnia.smartdoorbell.MainActivity;
 import com.example.omnia.smartdoorbell.R;
+import com.example.omnia.smartdoorbell.Spacecraft;
 import com.example.omnia.smartdoorbell.models.VolleyMultipartRequest;
 import com.squareup.picasso.Picasso;
 
@@ -28,11 +32,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import droidninja.filepicker.FilePickerBuilder;
+import droidninja.filepicker.FilePickerConst;
 
 
 public class InsertTrustedActivity extends AppCompatActivity {
@@ -42,11 +50,16 @@ public class InsertTrustedActivity extends AppCompatActivity {
     ImageView imageView;
     List bitmaplist;
 
+    ArrayList<String> filePaths=new ArrayList<String>();
+    GridView gv;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_trusted);
 
+        gv= (GridView) findViewById(R.id.gv);
 
         namee = (TextView) findViewById(R.id.name);
         // img = (TextView) findViewById(R.id.Trusted_imageView_insert);
@@ -145,36 +158,61 @@ public class InsertTrustedActivity extends AppCompatActivity {
     }
 
     public void choose(View view) {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(i, 100);
+
+        filePaths.clear();
+
+        FilePickerBuilder.getInstance().setMaxCount(5)
+                .setSelectedFiles(filePaths)
+                .setActivityTheme(R.style.AppTheme)
+                .pickPhoto(InsertTrustedActivity.this);
+
+
+
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
 
-            //getting the image Uri
-            Uri imageUri = data.getData();
-//            if (bitmaplist ==null){
-//                bitmaplist=new ArrayList<Bitmap>();
-//            }
+        switch (requestCode)
+        {
+            case FilePickerConst.REQUEST_CODE:
 
-            try {
-                //getting bitmap object from uri
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                if(resultCode==RESULT_OK && data!=null)
+                {
+                    filePaths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_PHOTOS);
+                    Log.e(" file paths 0 ", filePaths.get(0) + "");
+                    Log.e(" file paths 1", filePaths.get(1) + "");
+                    Log.e(" file paths 2", filePaths.get(2) + "");
+                    Spacecraft s;
+                    ArrayList<Spacecraft> spacecrafts=new ArrayList<>();
+
+                    try
+                    {
+                        for (String path:filePaths) {
+                            s=new Spacecraft();
+                            s.setName(path.substring(path.lastIndexOf("/")+1));
+
+                            s.setUri(Uri.fromFile(new File(path)));
+
+                            Log.e(" ssssss", s.getName() + "  "+s.getUri());
+                            spacecrafts.add(s);
+
+                            Log.e(" spacecrafts", spacecrafts.get(0).getName() + "  "+spacecrafts.get(0).getUri());
+                        }
+
+                        gv.setAdapter(new CustomAdapter(InsertTrustedActivity.this,spacecrafts));
+                        Toast.makeText(InsertTrustedActivity.this, "Total = "+String.valueOf(spacecrafts.size()), Toast.LENGTH_SHORT).show();
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
 
 
 
-                //displaying selected image to imageview
-                imageView.setImageBitmap(bitmap);
+                }
 
-                //calling the method uploadBitmap to upload image
-                // uploadBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

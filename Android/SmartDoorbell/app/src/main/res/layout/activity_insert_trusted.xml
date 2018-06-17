@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.omnia.smartdoorbell.trusted.InsertTrustedActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context="com.example.omnia.smartdoorbell.trusted.InsertTrustedActivity">
+    android:padding="16dp">
+
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -44,7 +48,10 @@
             android:backgroundTint="#b9303f9f"
             android:onClick="choose"
             android:src="@drawable/ic_add_black_24dp" />
+
+
     </RelativeLayout>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,5 +61,6 @@
         android:textColor="@color/colorAccent"
         android:textAppearance="?android:textAppearanceLarge"
         android:onClick="insert_trusted"/>
-
 </LinearLayout>
+
+

@@ -53,6 +53,8 @@
             android:onClick="choose"
             android:src="@drawable/ic_add_black_24dp" />
     </RelativeLayout>
+    <include layout="@layout/content_main" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
